@@ -15,9 +15,9 @@ MODEL_PATH = os.path.join(ARTIFACTS_DIR, "FINAL_CNN_FOCAL_LOSS_MODEL.h5")
 ARTIFACTS_PATH = os.path.join(ARTIFACTS_DIR, "FINAL_DL_ARTIFACTS.joblib")
 
 # === USER INPUTS: CONFIGURE THE PIXEL YOU WANT TO TEST ===
-CASE_TO_TEST = 5          # Example: The case number (e.g., 'Case_5')
-X_COORD_TO_TEST = 150     # Example: The X-coordinate of the pixel
-Y_COORD_TO_TEST = 80      # Example: The Y-coordinate of the pixel
+CASE_TO_TEST = 1          # Example: The case number (e.g., 'Case_5')
+X_COORD_TO_TEST = 1     # Example: The X-coordinate of the pixel
+Y_COORD_TO_TEST = 1      # Example: The Y-coordinate of the pixel
 
 # Define where to save the output Excel file
 OUTPUT_EXCEL_PATH = os.path.join(BASE_PROJECT_DIR, "4_Inference_and_Visualization", f"Pixel_Report_Case{CASE_TO_TEST}_({X_COORD_TO_TEST},{Y_COORD_TO_TEST}).xlsx")
@@ -40,7 +40,7 @@ def load_single_pixel_data(path, case_id, x_coord, y_coord):
             if case_name not in file:
                 print(f"FATAL: {case_name} not found in the data file.")
                 return None
-            
+
             data_cube = file[case_name]
             # Check if coordinates are valid
             if y_coord >= data_cube.shape[1] or x_coord >= data_cube.shape[0]:
@@ -50,15 +50,16 @@ def load_single_pixel_data(path, case_id, x_coord, y_coord):
             # h5py reads in (pages, y, x) format, but our model expects (x, y, pages)
             # We must read the vector correctly. The data was saved as (x,y,pages)
             pixel_vector = data_cube[x_coord, y_coord, :]
-            
+
             true_label_id = int(pixel_vector[0])
             if true_label_id == 0:
                 print("WARNING: Selected pixel is 'Air'. Model is not trained on this.")
 
             # Extract spectral and spatial features
             spatial_features = np.array([pixel_vector[1]]) # TSI
-            spectral_features = pixel_vector[3:]
-            
+            # Corrected indexing to get the last 91 values as spectral features
+            spectral_features = pixel_vector[-len(Q_VALUES):]
+
             return spectral_features, spatial_features, true_label_id
 
     except Exception as e:
@@ -96,18 +97,18 @@ def main():
     # --- Step 3: Normalize the datapoint using loaded scalers ---
     spectral_s = artifacts['spectral_scaler'].transform([spectral_features])
     spatial_s = artifacts['spatial_scaler'].transform([spatial_features])
-    
+
     # Reshape for the CNN model (add batch and feature dimensions)
     spectral_s_reshaped = np.expand_dims(spectral_s, axis=2)
 
     # --- Step 4: Run prediction ---
     print("\n--- Running prediction on the single pixel ---")
     predicted_proba = model.predict([spectral_s_reshaped, spatial_s], verbose=0)[0][0]
-    
+
     # --- Step 5: Classify using the optimal threshold ---
     final_prediction = (predicted_proba >= artifacts['optimal_threshold']).astype(int)
     final_label_name = BINARY_CLASS_NAMES[final_prediction]
-    
+
     true_label_name = CLASS_NAMES_MAPPED.get(true_label_id, "Unknown")
 
     print(f"...Predicted Probability of Cancer: {predicted_proba:.4f}")
@@ -115,7 +116,7 @@ def main():
 
     # --- Step 6: Create and save the Excel report ---
     print(f"\n--- Saving report to Excel file: {OUTPUT_EXCEL_PATH} ---")
-    
+
     # Create the Summary Report DataFrame
     summary_data = {
         "Case ID": [CASE_TO_TEST],
@@ -139,7 +140,7 @@ def main():
     with pd.ExcelWriter(OUTPUT_EXCEL_PATH, engine='openpyxl') as writer:
         summary_df.to_excel(writer, sheet_name='Summary_Report', index=False)
         spectrum_df.to_excel(writer, sheet_name='Full_Spectrum', index=False)
-        
+
     print("...Excel report saved successfully.")
     print("\n--- Script Finished ---")
 
