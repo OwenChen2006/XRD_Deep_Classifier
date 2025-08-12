@@ -118,10 +118,17 @@ Definitive Script to Predict a Single Pixel and Export to Excel
 
 **How to Use:**
 *Save this code as a new Python file (e.g., predict_single_pixel.py).
+
 *Place it in the 4_Inference_and_Visualization/ folder of your project.
+
 *Configure the four variables at the top:
+
 *CASE_TO_TEST: The case number you want to analyze (e.g., 5).
+
 *X_COORD_TO_TEST: The X-coordinate of the pixel.
+
 *Y_COORD_TO_TEST: The Y-coordinate of the pixel.
+
 *OUTPUT_EXCEL_PATH: The name for the output Excel file.
+
 *Run from the terminal: python predict_single_pixel.py
