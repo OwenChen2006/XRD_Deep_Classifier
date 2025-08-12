@@ -90,7 +90,7 @@ If you acquire new data and wish to retrain or fine-tune the model, use the scri
 
 ---
 
-**Single pixel predictor:**
+## Single pixel predictor:
 1. Takes a specific Case ID and (X, Y) coordinate as input.
 2. Loads your final trained pixel-level deep learning model and its artifacts.
 3. Extracts the data for that single pixel.
