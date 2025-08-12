@@ -98,15 +98,23 @@ If you acquire new data and wish to retrain or fine-tune the model, use the scri
 5. Saves a clear and detailed report of the inputs and outputs to an Excel file.
 The New Inference Pipeline for a Single Pixel
 
-*Load Artifacts: The script will load the saved FINAL_CNN_FOCAL_LOSS_MODEL.h5, the fitted spectral_scaler and spatial_scaler, and the optimal_threshold.
-*Extract Datapoint: It will open the SpatialData.mat file, navigate to the specified Case_ID, and extract the 94-page data vector for the exact (X, Y) coordinate.
-*Normalize: It will apply the loaded scalers to the 91-point spectrum and the TSI value from the extracted data.
-*Predict: It will run the model on the single normalized datapoint to get a probability score.
-*Classify: It will apply the loaded optimal_threshold to the probability to get a final "Benign" or "Cancer" classification.
-*Export to Excel: It will create a two-sheet Excel file:
-*Sheet 1 ("Summary_Report"): A single row containing the coordinate, the true label, the model's predicted probability, and the final classification.
-*Sheet 2 ("Full_Spectrum"): The raw 91-point XRD spectrum for that pixel, so you can plot and analyze it yourself.
-*Definitive Script to Predict a Single Pixel and Export to Excel
+Load Artifacts: The script will load the saved FINAL_CNN_FOCAL_LOSS_MODEL.h5, the fitted spectral_scaler and spatial_scaler, and the optimal_threshold.
+
+Extract Datapoint: It will open the SpatialData.mat file, navigate to the specified Case_ID, and extract the 94-page data vector for the exact (X, Y) coordinate.
+
+Normalize: It will apply the loaded scalers to the 91-point spectrum and the TSI value from the extracted data.
+
+Predict: It will run the model on the single normalized datapoint to get a probability score.
+
+Classify: It will apply the loaded optimal_threshold to the probability to get a final "Benign" or "Cancer" classification.
+
+Export to Excel: It will create a two-sheet Excel file:
+
+Sheet 1 ("Summary_Report"): A single row containing the coordinate, the true label, the model's predicted probability, and the final classification.
+
+Sheet 2 ("Full_Spectrum"): The raw 91-point XRD spectrum for that pixel, so you can plot and analyze it yourself.
+
+Definitive Script to Predict a Single Pixel and Export to Excel
 
 **How to Use:**
 *Save this code as a new Python file (e.g., predict_single_pixel.py).
