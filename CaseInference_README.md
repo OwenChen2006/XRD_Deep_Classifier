@@ -35,3 +35,5 @@ The script will produce two outputs:
     *   `Final_Prediction`: The final "Benign" or "Cancer" label based on the optimal threshold.
 
 Possible Models to Load: 
+1. XRD_Model, which requires a TSI column as well.
+2. Calculated_TSI_Model, which sums all of the q-values manually.
