@@ -98,7 +98,7 @@ If you acquire new data and wish to retrain or fine-tune the model, use the scri
 5. Saves a clear and detailed report of the inputs and outputs to an Excel file.
 The New Inference Pipeline for a Single Pixel
 
-Load Artifacts: The script will load the saved FINAL_CNN_FOCAL_LOSS_MODEL.h5, the fitted spectral_scaler and spatial_scaler, and the optimal_threshold.
+Load Artifacts: The script will load the saved model, the fitted spectral_scaler and spatial_scaler, and the optimal_threshold.
 
 Extract Datapoint: It will open the SpatialData.mat file, navigate to the specified Case_ID, and extract the 94-page data vector for the exact (X, Y) coordinate.
 
