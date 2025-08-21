@@ -6,7 +6,7 @@
 
 ## 1. Project Overview
 
-This repository contains the complete codebase and trained model artifacts for the research project: "A Hybrid Deep Learning Approach for Breast Cancer Identification in Spatially Resolved X-ray Diffraction Data."
+This repository contains the complete codebase and trained model artifacts for Breast Cancer Identification in Spatially Resolved X-ray Diffraction Data.
 
 The primary achievement of this work is a state-of-the-art, pixel-level **1D Convolutional Neural Network (1D-CNN)** that achieves an exceptional **ROC AUC of 0.995** for classifying cancerous vs. benign tissue from hyperspectral XRD data. This model was trained and validated on a large dataset of over 900,000 tissue pixels from 22 real human lumpectomy cases.
 
